@@ -8,12 +8,12 @@ import { useEventsContext } from "../../data/globalState";
 export const EventDetail: FC<EventDetailProps> = (props: EventDetailProps) => {
 
   const { route, navigation } = props;
-  const { id } = route.params
+  const { id, isUserEvent } = route.params
   const { events, userName, updateEventTracking } = useEventsContext()
   const event = events.filter(event => event.id === id)[0]
   const isTracked = event.visitors?.filter((name) => name === userName)
   const setTrackedEvent = () => {
-    updateEventTracking(event.id, !isTracked)
+    updateEventTracking(event.id, !isUserEvent)
     navigation.goBack()
   }
 
@@ -30,7 +30,7 @@ export const EventDetail: FC<EventDetailProps> = (props: EventDetailProps) => {
       <TouchableOpacity
         onPress={setTrackedEvent}
         style={styles.button}>
-        <Text style={styles.buttonText}>{isTracked ? "UnTrack Now" : "Track Now"}</Text>
+        <Text style={styles.buttonText}>{isUserEvent ? "UnTrack Now" : "Track Now"}</Text>
       </TouchableOpacity>
     </View>
   </View>)

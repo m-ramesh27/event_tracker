@@ -35,7 +35,6 @@ const Image = (props: ImageProps) => {
       <AnimatedFastImage style={[style]}
                          onError={onError}
                          onLoadEnd={onLoadEnd}
-                         tintColor={tintColor}
                          resizeMode={resizeMode} source={image} />
       {!loadDone && defaultSource && (
         <AnimatedFastImage style={[style, {position: 'absolute'}]} resizeMode={resizeMode} source={defaultSource} />

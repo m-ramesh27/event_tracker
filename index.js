@@ -7,5 +7,5 @@ import App from './App';
 import {name as appName} from './app.json';
 import { LogBox } from 'react-native';
 
-LogBox.ignoreLogs(['warning'])
+LogBox.ignoreLogs(['Warning: ...']);
 AppRegistry.registerComponent(appName, () => App);

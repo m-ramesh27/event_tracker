@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet ,Modal as BottomSheet } from 'react-native';
+//We can use alias path "@data" somehow It's not working
 import data from '../../data';
 
 interface CityBottomSheetProps {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
       marginHorizontal:12,
       borderTopEndRadius:12,
       borderTopStartRadius:12,
-      
+
     },
     title: {
       fontSize: 20,
@@ -63,6 +64,6 @@ const styles = StyleSheet.create({
       fontSize: 18,
     },
   });
-  
+
 
 export default CityBottomSheet;

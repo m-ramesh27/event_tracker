@@ -1,46 +1,43 @@
-import React, { FC, ComponentType, useState, useEffect } from 'react';
+import React, { ComponentType, FC, useEffect, useState } from "react";
 import {
+  GestureResponderEvent,
+  PanResponder,
+  PanResponderGestureState,
   Switch,
   Text,
-  PanResponder,
   TouchableOpacity,
-  View,
-  PanResponderGestureState,
-  GestureResponderEvent,
-  StyleSheet,
-} from 'react-native';
-import DraggableFlatList, {
-  RenderItemParams,
-  DragEndParams,
-} from 'react-native-draggable-flatlist';
-import CityBottomSheet from '../components/bottomsheet';
-import { useEventsContext } from '../data/globalState';
-import { DraggableGrid } from 'react-native-draggable-grid';
-import Image from '../components/Image/Image';
-import styles from '../screens/events/style';
-import { Event, EventsProps } from '../types';
+  View
+} from "react-native";
+import DraggableFlatList, { DragEndParams, RenderItemParams } from "react-native-draggable-flatlist";
+import CityBottomSheet from "../components/bottomsheet";
+import { useEventsContext } from "../data/globalState";
+import Image from "../components/Image/Image";
+import styles from "../screens/events/style";
+import { Event, EventsProps } from "../types";
 
 const withEventList = <P extends EventsProps>(
   WrappedComponent: ComponentType<P>
 ): FC<P> => {
-  const EventList: FC<P> = (props: P) => {
+  return (props: P) => {
     const { navigation, route } = props;
 
     const [isGridMode, setIsGridMode] = useState(false);
     const [key, setKey] = useState(0);
     const [isVisible, setVisible] = useState(false);
     const [selectedCity, setCity] = useState('');
-    const { events, userName } = useEventsContext();
+    const { events, updateEventTracking, userName } = useEventsContext();
     const [localEvents, setLocalEvents] = useState<Event[]>(events);
     const isUserEvent = route.name === 'TrackEvents';
-
+    const [userEvents,setUserEvent] = useState<Event[]>([])
     const navigateToDetail = (id: number) => {
-      navigation.navigate('EventDetail', { id });
+      navigation.navigate('EventDetail', { id, isUserEvent });
     };
 
-    const onSwipeUp = (gestureState: PanResponderGestureState) => {};
+    const onSwipeUp = (gestureState: PanResponderGestureState) => {
+    };
 
-    const onSwipeDown = (gestureState: PanResponderGestureState) => {};
+    const onSwipeDown = (gestureState: PanResponderGestureState) => {
+    };
 
     const onSwipeLeft = (gestureState: PanResponderGestureState) => {
       navigation.navigate('TrackEvents');
@@ -60,7 +57,8 @@ const withEventList = <P extends EventsProps>(
       onPanResponderMove: (
         evt: GestureResponderEvent,
         gestureState: PanResponderGestureState
-      ) => {},
+      ) => {
+      },
       onPanResponderRelease: (
         evt: GestureResponderEvent,
         gestureState: PanResponderGestureState
@@ -85,7 +83,9 @@ const withEventList = <P extends EventsProps>(
     const onClose = () => {
       setVisible(false);
     };
-
+    useEffect(() => {
+      getUserEvents()
+    }, [localEvents]);
     const selectCity = (city: string) => {
       setCity(city);
       setLocalEvents(events.filter((e) => e.city === city));
@@ -101,10 +101,17 @@ const withEventList = <P extends EventsProps>(
     };
 
     const getUserEvents = () => {
-      return localEvents.filter((event) =>
+    const   userEvents =  localEvents.filter((event) =>
         event.visitors?.some((name) => name === userName)
       );
+     setUserEvent(userEvents)
     };
+
+    const deleteEvent = (event:Event)=>{
+      // @ts-ignore
+      updateEventTracking(event.id, false)
+      getUserEvents()
+    }
 
     const renderItem = ({ item, getIndex, drag }: RenderItemParams<Event>) => {
       return (
@@ -124,9 +131,15 @@ const withEventList = <P extends EventsProps>(
                 {item.title}
               </Text>
               <Text style={styles.description}>{item.city}</Text>
-              <View style={styles.paidView}>
-                <Text style={styles.paidText}>{item.description}</Text>
+              <View style={styles.listBottom}>
+                <View style={[styles.paidView,{backgroundColor: item.description.includes("Free")?'green':'purple'}]}>
+                  <Text style={styles.paidText}>{item.description}</Text>
+                </View>
+                {isUserEvent?<TouchableOpacity onPress={()=>deleteEvent(item)} style={[styles.paidView,{backgroundColor: 'red'}]}>
+                  <Text style={styles.paidText}>{'Remove'}</Text>
+                </TouchableOpacity>:null}
               </View>
+
             </View>
           </View>
         </TouchableOpacity>
@@ -195,8 +208,9 @@ const withEventList = <P extends EventsProps>(
           numColumns={isGridMode ? 2 : 1}
           renderItem={renderItem}
           onDragEnd={onDragEnd}
+          contentContainerStyle={{paddingBottom:120}}
           keyExtractor={(item, index) => index.toString()}
-          data={isUserEvent ? getUserEvents() : localEvents}
+          data={isUserEvent ? userEvents : localEvents}
         />
         <CityBottomSheet
           onClose={onClose}
@@ -207,8 +221,6 @@ const withEventList = <P extends EventsProps>(
       </View>
     );
   };
-
-  return EventList;
 };
 
 export default withEventList;

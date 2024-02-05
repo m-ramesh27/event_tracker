@@ -7,14 +7,14 @@
 
 import React from 'react';
 import RootNavigation from './src/navigation';
-import { EventsProvider } from './src/data/globalState';
+import {EventsProvider} from './src/data/globalState';
 
 function App(): React.JSX.Element {
-  return (<EventsProvider>
-      <RootNavigation/>
-  </EventsProvider>)
+  return (
+    <EventsProvider>
+      <RootNavigation />
+    </EventsProvider>
+  );
 }
-
-
 
 export default App;
