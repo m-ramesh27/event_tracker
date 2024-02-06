@@ -6,7 +6,7 @@ const EventList:FC<EventsProps>= (props:EventsProps)=>{
 
   useEffect(()=>{
     props.navigation.setOptions({
-      title:'Events around you',
+      title: 'Events around you',
       headerRight: () => (
         <TouchableOpacity onPress={() => props.navigation.navigate("TrackEvents")}>
           <Text style={{ marginRight: 10 }}>Your Events</Text>

@@ -10,7 +10,7 @@ export type RootStackParamList = {
   export type EventDetailProps  = StackScreenProps<RootStackParamList, "EventDetail">;
   export type EventsProps<P = {}> = StackScreenProps<RootStackParamList , "Events" |"TrackEvents">
 
-  //Data types
+  //Data types ... ... ...
   export type Event = {
     id: number;
     title: string;
@@ -21,3 +21,10 @@ export type RootStackParamList = {
     visitors?:string[]
 };
 type EventList = Event[];
+
+//Omit , pick , exclude , partial  union  and assertion
+//types and interface different and usage
+//type alias ...
+//graph ql ... basic question
+//generic questions ...
+//Generics, Union Type, Intersection Type, Type Guards, Nullish Coalescing

@@ -58,23 +58,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
   },
-  cardContainer: {
-    margin: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
-    backgroundColor: 'white',
-    //flexWrap:"wrap",
-    flex: 1,
-  },
+
   button: {
     backgroundColor: '#4CAF50',
     borderRadius: 8,
@@ -89,8 +73,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   card: {
+
+  },
+  cardContainer: {
+    margin: 10,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
     borderRadius: 8,
     overflow: 'hidden',
+    backgroundColor: 'white',
+
+    flex: 1,
   },
   image: {
     height: 120, // Adjust the height as needed
